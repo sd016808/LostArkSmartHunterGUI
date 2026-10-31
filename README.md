@@ -6,6 +6,7 @@ Lost Ark (失落的方舟) 台版的自動化工具：每天一鍵打完所有�
 - **費用**：註冊免費試用 3 天，之後付費使用
 - **下載**：[Releases](https://github.com/sd016808/LostArkSmartHunterGUI/releases/latest) 最新版的 `SmartHunter_vX.X.X.zip`
 - **圖文版手冊**：https://sd016808.github.io/LostArkSmartHunterGUI/ (同一份內容，有章節目錄、排版比較好看)
+- **更新紀錄**：[CHANGELOG.md](CHANGELOG.md)，每一版改了什麼 (程式的「帳號」分頁也有連結)
 - **作者**：吃泡麵度年的SD
 
 ## 六步驟上手
