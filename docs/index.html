@@ -1,0 +1,902 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- 玩家使用手冊 (圖文版)。放在 GitHub Pages：https://sd016808.github.io/LostArkSmartHunterGUI/ (公開 repo 的 docs/index.html，
+     由 LostArkSmartHunter/publish_docs.ps1 上傳)。同一份內容的 Markdown 版是 Docs/ReleaseReadme.md (公開 repo 的 README)，改內容兩邊一起改。
+     2026-10-31 起不放在授權伺服器上 (玩家看手冊不會接觸到伺服器網域)，伺服器的 /usermanual 只轉址到這裡 -->
+<title>Smart Hunter 使用手冊</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Smart Hunter GUI 版的完整使用說明：安裝、註冊、設定角色、每日混沌副本 / 樂園 / 地獄、回報問題與續費">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chiron+GoRound+TC:wght@500;700&family=Noto+Sans+TC:wght@400;500;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+/* 版面：操作手冊。上方是程式畫面的示意與五步驟上手，下面是左側章節目錄 (桌機固定) + 右側章節；
+   每章附一個「畫面示意」，用跟程式一樣的深色畫，玩家一眼認得出是哪個畫面 */
+:root {
+  --bg: #F2F4F8;
+  --surface: #FFFFFF;
+  --ink: #172031;
+  --muted: #586274;
+  --line: #D9DFE9;
+  --accent: #2C63D4;
+  --accent-soft: #E2EBFB;
+  --gold: #9C6A00;
+  --gold-soft: #FFF2D2;
+  --ok: #1D7F4F;
+  --bad: #B93636;
+  --shadow: 0 1px 2px rgba(23, 32, 49, .06), 0 8px 24px rgba(23, 32, 49, .08);
+  /* 程式畫面示意：程式本身只有深色，兩種主題都用同一組 */
+  --app-bg: #16181D;
+  --app-bar: #1E2229;
+  --app-card: #2A2C31;
+  --app-btn: #3A3D44;
+  --app-input: #1A1C21;
+  --app-line: #3A3F48;
+  --app-fg: #E6E8EC;
+  --app-muted: #9AA3B0;
+  --app-blue: #5B8DEF;
+  --app-ok: #4CC38A;
+  --app-warn: #E0A030;
+  --app-bad: #E35D5D;
+  --app-gold: #F0B429;
+  --app-run: #B03A3A;
+  --display: "Chiron GoRound TC", "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif;
+  --body: "Noto Sans TC", "Microsoft JhengHei", "PingFang TC", sans-serif;
+  --mono: "JetBrains Mono", Consolas, "Courier New", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F1319; --surface: #171C24; --ink: #E5E9F0; --muted: #98A2B3; --line: #28303C;
+    --accent: #78A3F5; --accent-soft: #1B2944; --gold: #F0B429; --gold-soft: #2D2612;
+    --ok: #4CC38A; --bad: #EC7272; --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 28px rgba(0, 0, 0, .35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F1319; --surface: #171C24; --ink: #E5E9F0; --muted: #98A2B3; --line: #28303C;
+  --accent: #78A3F5; --accent-soft: #1B2944; --gold: #F0B429; --gold-soft: #2D2612;
+  --ok: #4CC38A; --bad: #EC7272; --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 10px 28px rgba(0, 0, 0, .35);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.75; }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.3; text-wrap: balance; margin: 0; }
+p { margin: 0; }
+ul, ol { margin: 0; padding-left: 1.3em; }
+li + li { margin-top: .35em; }
+code, .path { font-family: var(--mono); font-size: .88em; background: var(--accent-soft); color: var(--ink); padding: 1px 6px; border-radius: 5px; word-break: break-all; }
+kbd {
+  font-family: var(--mono); font-size: .82em; font-weight: 700; white-space: nowrap;
+  display: inline-block; padding: 1px 8px; line-height: 1.6;
+  background: var(--surface); color: var(--ink);
+  border: 1px solid var(--line); border-bottom-width: 3px; border-radius: 6px;
+}
+.ui { font-weight: 700; color: var(--ink); }  /* 程式上的按鈕 / 分頁名稱 */
+
+.page {
+  max-width: 1200px; margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 32px 72px;
+}
+
+/* ---------- 開頭 ---------- */
+.hero { display: grid; gap: 32px; align-items: center; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 980px) { .hero { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); } }
+.eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); font-weight: 700; }
+.hero h1 { font-size: clamp(32px, 5vw, 48px); margin-top: 10px; }
+.hero .lead { margin-top: 14px; color: var(--muted); font-size: 17px; max-width: 34em; }
+.hero .meta { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 14px; color: var(--muted); }
+.hero .meta span { display: inline-flex; align-items: center; gap: 6px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); display: inline-block; }
+.dot.gold { background: var(--gold); }
+
+/* ---------- 程式畫面示意 (深色，跟程式一樣) ---------- */
+.appwin { background: var(--app-bg); color: var(--app-fg); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); border: 1px solid var(--app-line); max-width: 100%; font-size: 14px; line-height: 1.5; }
+.appwin-title { display: flex; align-items: center; gap: 8px; padding: 6px 10px 6px 12px; background: #101216; font-size: 12px; color: var(--app-muted); }
+.appwin-title .wc { margin-left: auto; display: flex; gap: 14px; }
+.appwin-title .wc svg { width: 10px; height: 10px; stroke: var(--app-muted); stroke-width: 1.4; fill: none; }
+.appwin-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; padding: 10px 14px; background: var(--app-bar); }
+.appwin-head .brand { display: flex; align-items: center; gap: 8px; font-weight: 700; font-size: 15px; }
+.appwin-head .ver { color: var(--app-muted); font-size: 12px; font-weight: 400; }
+.appwin-head .right { margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; }
+.appwin-head .email { color: var(--app-fg); font-size: 13px; }
+.pill { display: inline-block; border: 1px solid var(--app-line); border-radius: 999px; padding: 1px 10px; font-size: 12px; white-space: nowrap; }
+.pill.ok { color: var(--app-ok); } .pill.warn { color: var(--app-warn); } .pill.bad { color: var(--app-bad); }
+.abtn { display: inline-flex; align-items: center; justify-content: center; background: var(--app-btn); color: var(--app-fg); border-radius: 6px; padding: 4px 10px; font-size: 13px; white-space: nowrap; border: 1px solid transparent; }
+.abtn.task { min-width: 128px; min-height: 40px; padding: 6px 12px; }
+.abtn.ghost { background: transparent; border-color: var(--app-line); }
+.abtn.off { color: #6E7684; }
+.abtn.run { background: var(--app-run); }
+.abtn.primary { background: var(--app-blue); color: #0E1420; font-weight: 700; }
+.zoom { display: inline-flex; align-items: center; gap: 2px; font-size: 12px; color: var(--app-muted); }
+.zoom .abtn { padding: 2px 8px; }
+.appwin-tabs { display: flex; gap: 2px; padding: 0 12px; border-bottom: 1px solid #2A2F38; overflow-x: auto; }
+.appwin-tabs span { padding: 8px 12px; color: var(--app-muted); border-bottom: 2px solid transparent; white-space: nowrap; }
+.appwin-tabs span.on { color: var(--app-fg); font-weight: 700; border-bottom-color: var(--app-blue); }
+.appwin-body { padding: 12px; display: grid; gap: 10px; }
+.acard { background: var(--app-card); border-radius: 8px; padding: 12px 14px; display: grid; gap: 8px; min-width: 0; }
+.acard h4 { margin: 0; font-size: 14px; font-family: var(--body); }
+.acard .hint { color: var(--app-muted); font-size: 12px; }
+.arow { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.astatus { display: grid; grid-template-columns: 4.5em minmax(0, 1fr); gap: 2px 10px; font-size: 13px; }
+.astatus dt { color: var(--app-muted); margin: 0; }
+.astatus dd { margin: 0; overflow-wrap: anywhere; }
+.ainput { background: var(--app-input); border: 1px solid var(--app-line); border-radius: 5px; padding: 5px 9px; font-size: 13px; color: var(--app-fg); min-width: 0; }
+.ainput.sel { display: flex; justify-content: space-between; gap: 8px; }
+.ainput.sel::after { content: "⌄"; color: var(--app-muted); }
+.acheck { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; }
+.acheck i { width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid var(--app-muted); display: inline-block; flex: none; }
+.acheck i.on { background: var(--app-blue); border-color: var(--app-blue); box-shadow: inset 0 0 0 3px var(--app-blue), inset 0 0 0 10px #0E1420; }
+.caption { margin-top: 8px; font-size: 13px; color: var(--muted); }
+
+.logo .lg-bg { fill: var(--app-bar); }
+.logo .lg-ring { fill: none; stroke: var(--app-blue); }
+.logo .lg-cross { stroke: var(--app-fg); }
+.logo .lg-dot { fill: var(--app-gold); }
+
+/* ---------- 五步驟上手 ---------- */
+.quick { margin-top: 44px; }
+.quick h2 { font-size: 22px; }
+.quick ol { list-style: none; padding: 0; margin-top: 16px; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); counter-reset: q; }
+.quick li { margin: 0; counter-increment: q; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px 16px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.quick li::before { content: counter(q); font-family: var(--display); font-weight: 700; font-size: 15px; width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: var(--accent); color: var(--surface); margin-bottom: 6px; }
+.quick li b { font-family: var(--display); font-size: 16px; }
+.quick li span { font-size: 14px; color: var(--muted); }
+.quick li a { font-size: 13px; }
+
+/* ---------- 版面：目錄 + 內容 ---------- */
+.layout { margin-top: 48px; display: grid; gap: 40px; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 960px) { .layout { grid-template-columns: 220px minmax(0, 1fr); } }
+.toc { display: none; }
+@media (min-width: 960px) {
+  .toc { display: block; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 20px); align-self: start; max-height: calc(100vh - 40px); overflow-y: auto; font-size: 14px; }
+}
+.toc .group { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; color: var(--gold); font-weight: 700; margin: 18px 0 6px; }
+.toc .group:first-child { margin-top: 0; }
+.toc a { display: block; padding: 5px 10px; border-left: 2px solid var(--line); color: var(--muted); text-decoration: none; }
+.toc a:hover { color: var(--ink); }
+.toc a.is-active { color: var(--accent); border-left-color: var(--accent); font-weight: 700; }
+.toc-mobile { margin-bottom: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 4px 14px; }
+@media (min-width: 960px) { .toc-mobile { display: none; } }
+.toc-mobile summary { cursor: pointer; padding: 8px 0; font-weight: 700; }
+.toc-mobile nav { display: grid; gap: 2px; padding-bottom: 10px; }
+.toc-mobile a { text-decoration: none; padding: 4px 0; }
+
+main { min-width: 0; }
+.chapter { padding-block: 40px; border-top: 1px solid var(--line); display: grid; gap: 18px; scroll-margin-top: 16px; }
+.chapter:first-of-type { border-top: 0; padding-top: 0; }
+.chapter h2 { font-size: clamp(24px, 3vw, 30px); display: grid; gap: 6px; }
+.chapter h3 { font-size: 19px; margin-top: 8px; }
+.chapter > p, .chapter .prose { max-width: 42em; }
+.prose { display: grid; gap: 12px; }
+
+.steps { list-style: none; padding: 0; counter-reset: s; display: grid; gap: 14px; max-width: 46em; }
+.steps > li { counter-increment: s; position: relative; padding-left: 44px; margin: 0; }
+.steps > li::before { content: counter(s); position: absolute; left: 0; top: 1px; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-weight: 700; font-size: 14px; background: var(--accent-soft); color: var(--accent); }
+.steps > li b { font-family: var(--display); }
+
+.callout { border-radius: 12px; padding: 12px 16px; background: var(--accent-soft); max-width: 46em; font-size: 15px; display: grid; gap: 4px; }
+.callout.gold { background: var(--gold-soft); }
+.callout strong { font-family: var(--display); }
+
+.two { display: grid; gap: 24px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 1080px) { .two { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+
+/* 開始前檢查清單 */
+.checklist { list-style: none; padding: 0; display: grid; gap: 8px; max-width: 46em; }
+.checklist li { margin: 0; }
+.checklist label { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; cursor: pointer; }
+.checklist input { width: 18px; height: 18px; margin: 4px 0 0; accent-color: var(--accent); }
+.checklist input:checked + span { color: var(--muted); }
+.checklist small { display: block; color: var(--muted); font-size: 13px; }
+.check-reset { justify-self: start; background: none; border: 0; color: var(--accent); font: inherit; font-size: 14px; cursor: pointer; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+
+/* 遊戲內設定 */
+.gs { display: grid; gap: 14px; }
+.gs-item { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; display: grid; gap: 14px; grid-template-columns: minmax(0, 1fr); align-items: start; }
+@media (min-width: 1080px) { .gs-item { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); } .gs-item.noimg { grid-template-columns: minmax(0, 1fr); } }
+.gs-item h3 { margin: 0; font-size: 18px; }
+.gs-item .set { display: grid; gap: 8px; min-width: 0; }
+.gs-item .why { font-size: 14px; color: var(--muted); }
+.gs-item figure { margin: 0; min-width: 0; }
+.gs-item img { display: block; width: 100%; max-width: 100%; height: auto; border-radius: 8px; border: 1px solid var(--app-line); background: var(--app-bg); }
+.setlist { list-style: none; padding: 0; display: grid; gap: 6px; }
+.setlist li { margin: 0; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 6px 10px; border-radius: 8px; background: var(--bg); font-size: 15px; }
+.st { font-family: var(--mono); font-size: 12px; font-weight: 700; border: 1px solid currentColor; border-radius: 6px; padding: 0 8px; white-space: nowrap; }
+.st.on { color: var(--ok); }
+.st.off { color: var(--bad); }
+.st.val { color: var(--accent); }
+
+/* 角色列表格子 */
+.charlist { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; max-width: 360px; }
+.charlist div { background: var(--app-card); border: 1px solid var(--app-line); border-radius: 8px; padding: 10px 8px; display: grid; justify-items: center; gap: 4px; font-size: 12px; color: var(--app-muted); }
+.charlist div b { font-family: var(--mono); font-size: 16px; color: var(--app-fg); }
+.charlist div.first { border-color: var(--app-gold); }
+.charlist div.first b { color: var(--app-gold); }
+.charlist .face { width: 26px; height: 26px; border-radius: 50%; background: var(--app-btn); }
+
+.setrow { display: grid; grid-template-columns: 2.6em 3.6em minmax(0, 1fr) auto; gap: 8px; align-items: center; font-size: 13px; }
+.setrow .lbl { color: var(--app-muted); }
+
+/* 任務卡 */
+.tasks { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.task { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px 18px; display: grid; gap: 10px; align-content: start; min-width: 0; }
+.task h3 { margin: 0; font-size: 19px; }
+.task .keys { font-size: 14px; color: var(--muted); }
+.task ol { font-size: 15px; }
+.task .foot { font-size: 13px; color: var(--muted); border-top: 1px dashed var(--line); padding-top: 10px; }
+
+/* 表格 */
+.table-wrap { overflow-x: auto; max-width: 100%; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 15px; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+tr:last-child td { border-bottom: 0; }
+th { font-size: 13px; color: var(--muted); font-weight: 700; white-space: nowrap; }
+td:first-child { white-space: nowrap; }
+.atable { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 12px; color: var(--app-fg); font-variant-numeric: tabular-nums; }
+.atable th, .atable td { border-bottom: 1px solid var(--app-line); padding: 5px 8px; text-align: left; white-space: nowrap; }
+.atable th { color: var(--app-muted); font-size: 11px; }
+.atable .ok { color: var(--app-ok); } .atable .bad { color: var(--app-bad); } .atable .muted { color: var(--app-muted); } .atable .gold { color: var(--app-gold); }
+.sample { font-family: var(--mono); font-size: 10px; letter-spacing: .1em; color: var(--app-gold); border: 1px solid var(--app-gold); border-radius: 4px; padding: 0 6px; margin-left: 8px; vertical-align: middle; }
+
+/* 續費流程 */
+.flow { list-style: none; padding: 0; display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); counter-reset: f; }
+.flow li { margin: 0; counter-increment: f; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; font-size: 15px; display: grid; gap: 4px; }
+.flow li::before { content: "步驟 " counter(f); font-family: var(--mono); font-size: 11px; letter-spacing: .1em; color: var(--gold); font-weight: 700; }
+.legend { display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; background: var(--app-bar); border-radius: 10px; padding: 10px 14px; color: var(--app-fg); font-size: 13px; }
+.legend > span { display: inline-flex; gap: 8px; align-items: center; }
+
+/* 聯絡 */
+.contact { display: grid; gap: 8px; max-width: 34em; }
+.contact .row { display: grid; grid-template-columns: 5.5em minmax(0, 1fr) auto; gap: 10px; align-items: center; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px 8px 14px; }
+.contact .k { color: var(--muted); font-size: 14px; }
+.contact .v { font-family: var(--mono); font-size: 15px; user-select: all; overflow-wrap: anywhere; }
+.copy { font: inherit; font-size: 13px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 8px; padding: 4px 12px; cursor: pointer; white-space: nowrap; }
+.copy:hover { border-color: var(--accent); }
+
+/* 常見問題 */
+.faq { display: grid; gap: 8px; max-width: 48em; }
+.faq details { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 0 16px; }
+.faq summary { cursor: pointer; padding: 12px 0; font-weight: 700; list-style: none; display: flex; gap: 10px; align-items: baseline; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::before { content: "+"; font-family: var(--mono); color: var(--accent); width: 1em; flex: none; }
+.faq details[open] summary::before { content: "−"; }
+.faq .ans { padding: 0 0 14px 1.6em; display: grid; gap: 8px; font-size: 15px; }
+
+footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 14px; display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between; }
+</style>
+
+<div class="page">
+
+  <header class="hero" id="start">
+    <div>
+      <div class="eyebrow">使用手冊 · 視窗版</div>
+      <h1>Smart Hunter 使用手冊</h1>
+      <p class="lead">從下載安裝，到每天一鍵打完所有角色的混沌副本、樂園與地獄。第一次用照「六步驟上手」做；之後遇到狀況，翻到最下面的常見問題。</p>
+      <div class="meta">
+        <span><i class="dot"></i>適用 Lost Ark 台版</span>
+        <span><i class="dot gold"></i>註冊免費試用 3 天</span>
+        <span><i class="dot"></i>需要 Windows 10 / 11</span>
+      </div>
+    </div>
+
+    <figure class="appwin" aria-label="Smart Hunter 主畫面示意圖" style="margin:0">
+      <div class="appwin-title">
+        <svg class="logo" viewBox="0 0 64 64" width="14" height="14" aria-hidden="true"><rect class="lg-bg" width="64" height="64" rx="14"/><circle class="lg-ring" cx="32" cy="32" r="18.5" stroke-width="5"/><path class="lg-cross" d="M32 7v13M32 44v13M7 32h13M44 32h13" stroke-width="5"/><circle class="lg-dot" cx="32" cy="32" r="5"/></svg>
+        Smart Hunter Engine
+        <span class="wc" aria-hidden="true"><svg viewBox="0 0 10 10"><path d="M1 5h8"/></svg><svg viewBox="0 0 10 10"><rect x="1.5" y="1.5" width="7" height="7"/></svg><svg viewBox="0 0 10 10"><path d="M1.5 1.5l7 7M8.5 1.5l-7 7"/></svg></span>
+      </div>
+      <div class="appwin-head">
+        <span class="brand"><svg class="logo" viewBox="0 0 64 64" width="22" height="22" aria-hidden="true"><rect class="lg-bg" width="64" height="64" rx="14"/><circle class="lg-ring" cx="32" cy="32" r="18.5" stroke-width="5"/><path class="lg-cross" d="M32 7v13M32 44v13M7 32h13M44 32h13" stroke-width="5"/><circle class="lg-dot" cx="32" cy="32" r="5"/></svg>Smart Hunter</span>
+        <span class="right">
+          <span class="email">player@example.com</span>
+          <span class="pill ok">試用 剩 3 天</span>
+          <span class="zoom"><span class="abtn">－</span><span>100%</span><span class="abtn">＋</span></span>
+          <span class="abtn">登出</span>
+        </span>
+      </div>
+      <div class="appwin-tabs"><span class="on">主控</span><span>設定</span><span>協助</span><span>帳號</span></div>
+      <div class="appwin-body">
+        <div class="acard">
+          <div class="arow">
+            <span class="abtn task">開始 每日混沌副本</span>
+            <span class="abtn task run">停止 樂園</span>
+            <span class="abtn task">開始 地獄</span>
+            <span class="abtn task">暫停</span>
+          </div>
+          <div class="hint">快捷鍵：Ctrl+F10 每日混沌副本 · Ctrl+F8 樂園 · Ctrl+F5 地獄 · F10 暫停 / 繼續</div>
+        </div>
+        <div class="acard">
+          <h4>狀態</h4>
+          <dl class="astatus">
+            <dt>目前</dt><dd>樂園</dd>
+            <dt>遊戲</dt><dd>遊戲視窗 2560x1440</dd>
+          </dl>
+        </div>
+      </div>
+    </figure>
+  </header>
+
+  <section class="quick" aria-labelledby="quick-title">
+    <h2 id="quick-title">六步驟上手</h2>
+    <ol>
+      <li><b>下載並解壓縮</b><span>整包 zip 解壓到同一個資料夾</span><a href="#install">看安裝 →</a></li>
+      <li><b>安裝 ViGEmBus</b><span>虛擬搖桿驅動，只要裝一次</span><a href="#install">看安裝 →</a></li>
+      <li><b>註冊試用</b><span>開程式按「註冊」，免費 3 天</span><a href="#account">看註冊 →</a></li>
+      <li><b>調好遊戲設定</b><span>自動瞄準、HUD 100%、小地圖 100% 等五項</span><a href="#ingame">看設定 →</a></li>
+      <li><b>設定角色</b><span>在「設定」分頁填要打的角色</span><a href="#config">看設定 →</a></li>
+      <li><b>開遊戲，按 <kbd>Ctrl</kbd>+<kbd>F10</kbd></b><span>一隻一隻角色自動打完</span><a href="#tasks">看任務 →</a></li>
+    </ol>
+  </section>
+
+  <div class="layout">
+    <aside class="toc" aria-label="章節目錄">
+      <div class="group">第一次使用</div>
+      <a href="#install">安裝</a>
+      <a href="#account">註冊與登入</a>
+      <a href="#game">遊戲畫面設定</a>
+      <a href="#ingame">遊戲內設定</a>
+      <a href="#config">設定角色</a>
+      <div class="group">每天使用</div>
+      <a href="#tasks">開始任務</a>
+      <a href="#hotkeys">快捷鍵</a>
+      <a href="#results">看結果</a>
+      <div class="group">需要幫忙時</div>
+      <a href="#help">回報問題與遠端協助</a>
+      <a href="#billing">帳號與續費</a>
+      <a href="#faq">常見問題</a>
+      <a href="#notes">注意事項</a>
+    </aside>
+
+    <main>
+      <details class="toc-mobile">
+        <summary>章節目錄</summary>
+        <nav aria-label="章節目錄">
+          <a href="#install">安裝</a><a href="#account">註冊與登入</a><a href="#game">遊戲畫面設定</a><a href="#ingame">遊戲內設定</a><a href="#config">設定角色</a>
+          <a href="#tasks">開始任務</a><a href="#hotkeys">快捷鍵</a><a href="#results">看結果</a>
+          <a href="#help">回報問題與遠端協助</a><a href="#billing">帳號與續費</a><a href="#faq">常見問題</a><a href="#notes">注意事項</a>
+        </nav>
+      </details>
+
+      <!-- ===================== 安裝 ===================== -->
+      <section class="chapter" id="install">
+        <h2><span class="eyebrow">第一次使用</span>安裝</h2>
+        <ol class="steps">
+          <li><b>下載</b>：到 <a href="https://github.com/sd016808/LostArkSmartHunterGUI/releases/latest" target="_blank" rel="noopener">Releases 頁面</a> 下載最新版的 <span class="path">SmartHunter_vX.X.X.zip</span>。</li>
+          <li><b>解壓縮</b>：整個 zip 解壓縮到同一個資料夾，例如 <span class="path">D:\SmartHunter</span>。<span class="path">LostArkSmartHunter.exe</span>、所有 <span class="path">.dll</span> 和 <span class="path">Routes</span> 資料夾要放在一起，只拷 exe 開不起來。</li>
+          <li><b>安裝 ViGEmBus</b>：到 <a href="https://github.com/nefarius/ViGEmBus/releases" target="_blank" rel="noopener">ViGEmBus Releases</a> 下載安裝檔安裝，裝完重開機。程式用它模擬 Xbox 搖桿來操作角色，只要裝一次。</li>
+          <li><b>執行</b>：雙擊 <span class="path">LostArkSmartHunter.exe</span>。Windows 會問「是否允許此 App 變更您的裝置」，按「是」。遊戲只接受系統管理員權限程式送出的按鍵，所以每次開都會問。</li>
+        </ol>
+        <div class="callout">
+          <strong>第一次執行跳出「Windows 已保護您的電腦」？</strong>
+          <p>按「其他資訊」再按「仍要執行」。不需要另外安裝 .NET。</p>
+        </div>
+      </section>
+
+      <!-- ===================== 註冊與登入 ===================== -->
+      <section class="chapter" id="account">
+        <h2><span class="eyebrow">第一次使用</span>註冊與登入</h2>
+        <div class="two">
+          <div class="prose">
+            <p>第一次打開會看到登入畫面。切到 <span class="ui">註冊 (免費試用 3 天)</span>，填 email 和密碼 (至少 8 個字)，按 <span class="ui">註冊並開始試用</span> 就會直接進主畫面。</p>
+            <ul>
+              <li><b>一台電腦只有一次免費試用</b>。同一台電腦再註冊新帳號，帳號會建立，但要付費才能使用。</li>
+              <li><b>記住登入</b>：之後開程式會直接進主畫面，不用再打密碼；按右上角 <span class="ui">登出</span> 才會忘記。</li>
+              <li><b>同一個帳號同時只能在一台電腦使用</b>。在另一台電腦登入，原本那台會被登出，正在跑的任務也會停。</li>
+              <li><b>忘記密碼</b>：登入畫面切到 <span class="ui">忘記密碼</span>，填 email 按 <span class="ui">寄驗證碼到這個 email</span>，把信裡的 6 位數驗證碼 (15 分鐘內有效) 和新密碼填進去就好。沒收到先看垃圾信件夾。驗證碼一小時最多寄 3 次，輸錯 5 次要重寄。</li>
+            </ul>
+          </div>
+          <figure style="margin:0">
+            <div class="appwin" aria-label="註冊畫面示意圖">
+              <div class="appwin-body" style="padding:18px">
+                <div class="acard" style="gap:10px">
+                  <div class="arow" style="gap:10px">
+                    <svg class="logo" viewBox="0 0 64 64" width="30" height="30" aria-hidden="true"><rect class="lg-bg" width="64" height="64" rx="14"/><circle class="lg-ring" cx="32" cy="32" r="18.5" stroke-width="5"/><path class="lg-cross" d="M32 7v13M32 44v13M7 32h13M44 32h13" stroke-width="5"/><circle class="lg-dot" cx="32" cy="32" r="5"/></svg>
+                    <b style="font-size:20px">Smart Hunter</b>
+                  </div>
+                  <div class="arow"><span class="abtn">登入</span><span class="abtn off">註冊 (免費試用 3 天)</span><span class="abtn">忘記密碼</span></div>
+                  <div class="hint">Email</div>
+                  <div class="ainput">player@example.com</div>
+                  <div class="hint">密碼 (至少 8 個字)</div>
+                  <div class="ainput">●●●●●●●●●●</div>
+                  <div class="hint">再輸入一次密碼</div>
+                  <div class="ainput">●●●●●●●●●●</div>
+                  <span class="abtn primary" style="min-height:38px">註冊並開始試用</span>
+                  <div class="hint">一台電腦只有一次免費試用。同一個帳號同時只能在一台電腦登入。</div>
+                </div>
+              </div>
+            </div>
+            <figcaption class="caption">登入畫面切到「註冊」的樣子 (示意圖)</figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ===================== 遊戲畫面設定 ===================== -->
+      <section class="chapter" id="game">
+        <h2><span class="eyebrow">第一次使用</span>遊戲畫面設定</h2>
+        <p>程式是「看」遊戲畫面來判斷現在在哪、要按什麼，所以遊戲畫面要讓它看得清楚。開始任務前確認一次，打勾會記在這個瀏覽器裡。</p>
+        <ul class="checklist" id="checklist">
+          <li><label><input type="checkbox" id="chk-res"><span>解析度是 16:9、至少 1920×1080<small>1920×1080、2560×1440、3840×2160 都可以；16:10 等其他比例不支援</small></span></label></li>
+          <li><label><input type="checkbox" id="chk-window"><span>遊戲用「視窗」或「無邊框視窗」<small>程式畫在遊戲上的標記 (紅圈、箭頭) 只有這兩種模式看得到</small></span></label></li>
+          <li><label><input type="checkbox" id="chk-cover"><span>遊戲畫面沒被其他視窗擋住，也沒縮到工作列<small>視窗模式時，工作列不要蓋到遊戲畫面下緣</small></span></label></li>
+          <li><label><input type="checkbox" id="chk-mouse"><span>任務進行中不動滑鼠、不調整遊戲視窗大小<small>游標擋到要辨識的地方時，程式會自己把游標移到畫面左邊</small></span></label></li>
+          <li><label><input type="checkbox" id="chk-ingame"><span>遊戲內設定五項都調好了<small>自動瞄準、指定地點技能、HUD 100%、小地圖 100%、角色列表面板，見下一章</small></span></label></li>
+          <li><label><input type="checkbox" id="chk-order"><span>程式跟遊戲誰先開都可以<small>遊戲重開、切帳號、換解析度，程式都不用重開；按開始時才會去找遊戲視窗</small></span></label></li>
+        </ul>
+        <button type="button" class="check-reset" id="check-reset">清除打勾</button>
+      </section>
+
+      <!-- ===================== 遊戲內設定 ===================== -->
+      <section class="chapter" id="ingame">
+        <h2><span class="eyebrow">第一次使用</span>遊戲內設定</h2>
+        <p>下面五項是遊戲裡的設定，一定要照著調，程式才看得懂畫面、技能才打得到怪。前三項在遊戲的設定選單裡，照截圖上的分類標題找。</p>
+        <div class="gs">
+          <article class="gs-item">
+            <div class="set">
+              <h3>自動瞄準</h3>
+              <ul class="setlist">
+                <li><span>一般技能自動瞄準</span><span class="st on">勾</span></li>
+                <li><span>地點技能自動瞄準</span><span class="st on">勾</span></li>
+              </ul>
+              <p class="why">在「額外功能」→「自動瞄準」。程式用虛擬搖桿放技能，要靠自動瞄準才會對準怪。</p>
+            </div>
+            <figure><img src="data:image/webp;base64,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" width="794" height="226" alt="遊戲設定的額外功能：一般技能自動瞄準、地點技能自動瞄準都打勾" loading="lazy"><figcaption class="caption">額外功能 → 自動瞄準</figcaption></figure>
+          </article>
+          <article class="gs-item">
+            <div class="set">
+              <h3>指定地點技能</h3>
+              <ul class="setlist">
+                <li><span>使用智能指定地點技能</span><span class="st on">勾</span></li>
+                <li><span>顯示指定地點技能教學</span><span class="st off">不勾</span></li>
+              </ul>
+              <p class="why">在「指定地點技能設定」。勾了智能指定，地點技能會直接放出去，不會停下來等人選位置；教學不勾，才不會跳出視窗擋住畫面。</p>
+            </div>
+            <figure><img src="data:image/webp;base64,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" width="372" height="168" alt="指定地點技能設定：顯示指定地點技能教學不勾、使用智能指定地點技能打勾" loading="lazy" style="max-width:372px"><figcaption class="caption">指定地點技能設定</figcaption></figure>
+          </article>
+          <article class="gs-item">
+            <div class="set">
+              <h3>HUD 大小</h3>
+              <ul class="setlist">
+                <li><span>HUD大小</span><span class="st val">100%</span></li>
+              </ul>
+              <p class="why">在「UI顯示設定」。程式找按鈕和介面的位置，是照 HUD 100% 的大小量的，調大調小都會找不到。</p>
+            </div>
+            <figure><img src="data:image/webp;base64,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" width="759" height="104" alt="UI顯示設定：HUD大小選 100%" loading="lazy"><figcaption class="caption">UI顯示設定 → HUD大小</figcaption></figure>
+          </article>
+          <article class="gs-item noimg">
+            <div class="set">
+              <h3>右上角的小地圖</h3>
+              <ul class="setlist">
+                <li><span>縮放</span><span class="st val">100%</span></li>
+                <li><span>透明度</span><span class="st val">100%</span></li>
+              </ul>
+              <p class="why">程式靠小地圖認出角色在副本裡的位置，縮放或透明度不一樣，就對不上錄好的路線。</p>
+            </div>
+          </article>
+          <article class="gs-item">
+            <div class="set">
+              <h3>角色列表右邊的面板</h3>
+              <ul class="setlist">
+                <li><span>混沌副本</span><span class="st val">要顯示</span></li>
+                <li><span>樂園(天堂)</span><span class="st val">要顯示</span></li>
+              </ul>
+              <p class="why">ESC →「立即使用其他角色登入」，右邊這個面板。用面板右上角的齒輪設定要顯示的項目，「混沌副本」和「樂園(天堂)」都要出現，順序沒關係。程式從這裡讀每隻角色還剩幾次；沒顯示的話讀不到，角色會被當成沒有次數而全部跳過。</p>
+            </div>
+            <figure><img src="data:image/webp;base64,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" width="529" height="414" alt="角色列表右邊的面板：列出終結副本獲得金幣、混沌副本、守護者討伐戰、樂園(天堂) 的次數" loading="lazy" style="max-width:529px"><figcaption class="caption">角色列表右邊的面板，混沌副本和樂園(天堂) 都要有</figcaption></figure>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===================== 設定角色 ===================== -->
+      <section class="chapter" id="config">
+        <h2><span class="eyebrow">第一次使用</span>設定角色</h2>
+        <p><span class="ui">設定</span> 分頁決定每日任務要打哪些角色、打哪個副本。改完按 <span class="ui">儲存</span>，下一次開始任務時生效，不用重開程式。</p>
+
+        <h3>slot 是角色在列表裡的位置</h3>
+        <div class="two">
+          <div class="prose">
+            <p>遊戲裡 ESC 選單的 <span class="ui">立即使用其他角色登入</span> 會列出所有角色。slot 就是角色在這個列表的位置：<b>從左到右、從上到下</b>數，第一排是 1、2、3，第二排 4、5、6，以此類推，最多 30 隻。超過 9 隻時程式會自己捲動列表。</p>
+            <p>多個帳號可以共用同一份設定：slot 照角色最多的那個帳號填，角色比較少的帳號沒有的 slot 會自動略過。</p>
+          </div>
+          <figure style="margin:0">
+            <div class="appwin" style="padding:14px" aria-label="角色列表 slot 編號示意圖">
+              <div class="charlist">
+                <div class="first"><span class="face"></span><b>1</b>角色</div><div><span class="face"></span><b>2</b>角色</div><div><span class="face"></span><b>3</b>角色</div>
+                <div><span class="face"></span><b>4</b>角色</div><div><span class="face"></span><b>5</b>角色</div><div><span class="face"></span><b>6</b>角色</div>
+                <div><span class="face"></span><b>7</b>角色</div><div><span class="face"></span><b>8</b>角色</div><div><span class="face"></span><b>9</b>角色</div>
+              </div>
+            </div>
+            <figcaption class="caption">「立即使用其他角色登入」列表的 slot 編號 (示意圖)</figcaption>
+          </figure>
+        </div>
+
+        <h3>每隻角色要打的副本</h3>
+        <div class="two">
+          <div class="prose">
+            <ul>
+              <li>下拉選 <span class="ui">自動</span>、<span class="ui">涅夫塔1作戰</span>、<span class="ui">亞比都斯3作戰</span>、<span class="ui">亞比都斯2作戰</span> 或 <span class="ui">亞比都斯1作戰</span>。</li>
+              <li><b>自動</b>：依序找 涅夫塔1 → 亞比都斯3 → 亞比都斯2 → 亞比都斯1，打第一個能進的；都不能打就只做公會簽到。</li>
+              <li>混沌副本次數 <b>100 以上</b> 的角色才會進副本，不夠的角色直接跳過、不登入。</li>
+              <li>不想打的角色按 <span class="ui">移除</span>；要加角色按 <span class="ui">+ 加一隻角色</span>。</li>
+              <li><b>公會</b>：每隻角色一定會簽到；勾 <span class="ui">公會簽到後順便捐贈銀幣</span> 才會捐。</li>
+              <li><b>打完自動關遊戲</b>：勾了的話，所有角色處理完會從 ESC 選單關閉遊戲。中途失敗不會關。</li>
+            </ul>
+          </div>
+          <figure style="margin:0">
+            <div class="appwin" aria-label="設定分頁示意圖">
+              <div class="appwin-tabs"><span>主控</span><span class="on">設定</span><span>協助</span><span>帳號</span></div>
+              <div class="appwin-body">
+                <div class="acard">
+                  <h4>每日混沌副本 (Ctrl+F10) 的角色</h4>
+                  <div class="setrow"><span class="lbl">slot</span><span class="ainput">1</span><span class="ainput sel">涅夫塔1作戰</span><span class="abtn">移除</span></div>
+                  <div class="setrow"><span class="lbl">slot</span><span class="ainput">2</span><span class="ainput sel">涅夫塔1作戰</span><span class="abtn">移除</span></div>
+                  <div class="setrow"><span class="lbl">slot</span><span class="ainput">3</span><span class="ainput sel">自動</span><span class="abtn">移除</span></div>
+                  <div class="arow"><span class="abtn">+ 加一隻角色</span></div>
+                  <span class="acheck"><i class="on"></i>公會簽到後順便捐贈銀幣 (簽到一定會做)</span>
+                  <span class="acheck"><i></i>所有角色處理完後從 ESC 選單自動關閉遊戲</span>
+                </div>
+                <div class="acard"><div class="arow"><span class="abtn" style="min-width:90px">儲存</span><span class="abtn">重新載入</span><span class="abtn">用記事本開啟</span></div></div>
+              </div>
+            </div>
+            <figcaption class="caption">設定分頁 (示意圖)</figcaption>
+          </figure>
+        </div>
+
+        <h3>地獄與其他設定</h3>
+        <div class="prose">
+          <ul>
+            <li><b>地獄寶箱順序</b>：打完要開哪個寶箱，照順序挑畫面上第一個有的，用「、」隔開，例如 <span class="path">特殊提煉、綁定金幣、融合</span>。名稱裡有這幾個字就算符合，寫 <span class="path">7階段特殊提煉寶箱</span> 就只要 7 階段的。留空 = 預設順序 (特殊提煉 &gt; 綁定金幣 &gt; 融合 &gt; 天堂 &gt; 破壞石 &gt; 提煉輔助 &gt; 星石 &gt; 碎片 &gt; 命運之石 &gt; 能力石 &gt; 手環)。</li>
+            <li><b>地獄要打的角色</b>：預設跟每日任務一樣；取消勾選 <span class="ui">地獄打的角色跟上面每日混沌副本相同</span> 就能另外設定，每隻也可以有自己的寶箱順序。</li>
+            <li><b>角色名字白名單</b> (選填)：一行一個角色名字，只用來修正統計報表裡辨識錯的名字。</li>
+            <li><b>重播停留</b>：一般不用改。</li>
+            <li><b>滑鼠游標</b>：游標擋到要辨識的畫面時程式會把它移到畫面左邊；這裡填最少隔幾秒才再檢查一次，0 = 每次截圖前都檢查 (預設)。覺得滑鼠太常被移走可以填 5 或 10，但游標擋在結算畫面的按鈕上程式會看不到通關，數字越大風險越高。</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===================== 開始任務 ===================== -->
+      <section class="chapter" id="tasks">
+        <h2><span class="eyebrow">每天使用</span>開始任務</h2>
+        <p>開好遊戲、角色站在城裡或任何安全的地方，按 <span class="ui">主控</span> 分頁的按鈕或快捷鍵開始。三種任務同時只能跑一種。</p>
+        <div class="tasks">
+          <article class="task">
+            <h3>每日混沌副本</h3>
+            <div class="keys"><kbd>Ctrl</kbd>+<kbd>F10</kbd> 或 <span class="ui">開始 每日混沌副本</span></div>
+            <ol>
+              <li>照 slot 順序切換角色，次數不到 100 的跳過</li>
+              <li>公會簽到，有勾就捐贈銀幣</li>
+              <li>領每週淨化任務獎勵，進混沌副本，照錄好的路線打完</li>
+              <li>全部完成會發出提示音，有勾就關遊戲</li>
+            </ol>
+            <div class="foot">中途停掉再按一次會從頭跑：已經打過的角色次數扣掉了，會直接跳過。</div>
+          </article>
+          <article class="task">
+            <h3>樂園 (天堂)</h3>
+            <div class="keys"><kbd>Ctrl</kbd>+<kbd>F8</kbd> 或 <span class="ui">開始 樂園</span></div>
+            <ol>
+              <li>跟每日任務用同一份角色；樂園次數是 0 的角色跳過</li>
+              <li>戰況板 → 樂園 → 天堂，選能打的最高階段入場</li>
+              <li>自動放技能、往怪靠過去，打完全部次數</li>
+              <li>出現「離開」就離開，換下一隻</li>
+            </ol>
+            <div class="foot">只打樂園，不做公會簽到和混沌副本。</div>
+          </article>
+          <article class="task">
+            <h3>地獄</h3>
+            <div class="keys"><kbd>Ctrl</kbd>+<kbd>F5</kbd> 或 <span class="ui">開始 地獄</span></div>
+            <ol>
+              <li>每隻角色都會登入 (角色列表看不到地獄次數)</li>
+              <li>選鑰匙入場：綠 &gt; 白 &gt; 橘 &gt; 紫 &gt; 藍，奈落鑰匙不用</li>
+              <li>每層清怪、使用祭壇 (只放藍色鑰匙)，找互動點往下跳，綠色「孤注一擲」優先</li>
+              <li>打完照寶箱順序開一個寶箱，按「再次挑戰」繼續，沒鑰匙就換下一隻</li>
+            </ol>
+            <div class="foot">每一場到過哪些樓層、開了什麼寶箱都會記錄下來。</div>
+          </article>
+        </div>
+
+        <h3>暫停、停止與其他操作</h3>
+        <div class="prose">
+          <ul>
+            <li><b>暫停 / 繼續</b>：任務中按 <kbd>F10</kbd> (或 <span class="ui">暫停</span> 按鈕) 就可以自己操作角色，再按一次 <kbd>F10</kbd> 繼續。</li>
+            <li><b>停止</b>：再按一次同一個快捷鍵，或按變成紅色的 <span class="ui">停止 …</span> 按鈕。程式會先做完手上的動作再停，可能要等幾秒。</li>
+            <li><b>換任務</b>：一個任務在跑時，按另一個任務的快捷鍵不會動作，要先停掉原本的。</li>
+            <li><b>遊戲上的標記</b>：紅圈 = 認到的怪、箭頭 = 往哪走；地獄裡綠框 G = 綠色「孤注一擲」、黃框 W = 一般的往下跳互動點。只有視窗或無邊框模式看得到，錄影也錄不到。</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===================== 快捷鍵 ===================== -->
+      <section class="chapter" id="hotkeys">
+        <h2><span class="eyebrow">每天使用</span>快捷鍵</h2>
+        <p>主控分頁的按鈕跟快捷鍵是同一件事。遊戲在前景時用快捷鍵比較方便，不用切回程式。</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>按鍵</th><th>功能</th></tr></thead>
+            <tbody>
+              <tr><td><kbd>Ctrl</kbd>+<kbd>F10</kbd></td><td>開始 / 停止 每日混沌副本</td></tr>
+              <tr><td><kbd>Ctrl</kbd>+<kbd>F8</kbd></td><td>開始 / 停止 樂園 (天堂)</td></tr>
+              <tr><td><kbd>Ctrl</kbd>+<kbd>F5</kbd></td><td>開始 / 停止 地獄</td></tr>
+              <tr><td><kbd>F10</kbd></td><td>任務進行中：暫停 / 繼續</td></tr>
+              <tr><td><kbd>Ctrl</kbd>+滑鼠滾輪</td><td>在程式視窗裡：放大 / 縮小程式畫面 (<kbd>Ctrl</kbd>+<kbd>0</kbd> 回到 100%)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ===================== 看結果 ===================== -->
+      <section class="chapter" id="results">
+        <h2><span class="eyebrow">每天使用</span>看結果</h2>
+        <div class="two">
+          <div class="prose">
+            <p>主控分頁左邊的 <span class="ui">狀態</span> 顯示現在在做什麼，右邊是執行紀錄。每日任務結束時 (完成、失敗或手動停止都會)，左邊會出現每隻角色的結算表，並在程式資料夾的 <span class="path">reports</span> 產生一份戰報網頁，按 <span class="ui">開啟 reports 資料夾</span> 就找得到，用瀏覽器打開，不用網路。</p>
+            <p>戰報裡有：</p>
+            <ul>
+              <li>今日結算：每隻角色的副本、結果、時間、死亡次數、片鱗、公會簽到 / 捐贈，破本月最快會標出來</li>
+              <li>近 30 天每張地圖的通關時間趨勢</li>
+              <li>本月各地圖的場數、平均 / 最快 / 最慢時間</li>
+              <li>死亡位置：在路線地圖上標出每次死掉的地方</li>
+              <li>片鱗：每隻角色今天 / 本月出現幾個，分命運與祝福</li>
+              <li>樂園：今天每隻角色打的階段與場數 (樂園任務結束時也會產生戰報)</li>
+            </ul>
+          </div>
+          <figure style="margin:0">
+            <div class="appwin" aria-label="結算表示意圖">
+              <div class="appwin-body">
+                <div class="acard" style="overflow-x:auto">
+                  <h4>結算表<span class="sample">範例</span></h4>
+                  <table class="atable">
+                    <thead><tr><th>角色</th><th>副本</th><th>結果</th><th>時間</th><th>死亡</th><th>片鱗</th></tr></thead>
+                    <tbody>
+                      <tr><td>角色A</td><td>涅夫塔1作戰</td><td class="ok">通關</td><td>3:12</td><td>0</td><td>1</td></tr>
+                      <tr><td>角色B</td><td>涅夫塔1作戰</td><td class="ok">通關</td><td class="gold">2:58 ★</td><td>0</td><td>0</td></tr>
+                      <tr><td>角色C</td><td>亞比都斯3作戰</td><td class="bad">逾時</td><td>6:00</td><td>1</td><td>0</td></tr>
+                      <tr><td>角色D</td><td>亞比都斯2作戰</td><td class="ok">通關</td><td>3:40</td><td>1</td><td>2</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            <figcaption class="caption">結算表大概長這樣 (範例資料)。★ = 這張地圖本月最快</figcaption>
+          </figure>
+        </div>
+        <div class="callout gold">
+          <strong>為什麼會「逾時」？</strong>
+          <p>一場副本超過 6 分鐘還沒看到結算畫面，程式會當作結束、換下一隻角色，當下的畫面存在 <span class="path">logs</span> 資料夾。常見原因是滑鼠擋在結算畫面的按鈕上，或角色卡在地形。</p>
+        </div>
+      </section>
+
+      <!-- ===================== 回報問題與遠端協助 ===================== -->
+      <section class="chapter" id="help">
+        <h2><span class="eyebrow">需要幫忙時</span>回報問題與遠端協助</h2>
+        <div class="two">
+          <div class="prose">
+            <h3 style="margin-top:0">送出回報</h3>
+            <p>到 <span class="ui">協助</span> 分頁，寫下發生什麼事 (哪個任務、第幾隻角色、大概幾點)，按 <span class="ui">送出回報</span>。程式會把最近 7 天的執行紀錄、失敗時的截圖、設定和統計紀錄打包傳給作者。<b>不會傳遊戲帳號密碼。</b></p>
+            <h3>遠端協助</h3>
+            <p>需要作者直接看畫面時，按 <span class="ui">請作者遠端協助</span>，作者會收到通知，在瀏覽器看到你<b>整個螢幕</b> (不只遊戲)。</p>
+            <ul>
+              <li>預設只能看；勾 <span class="ui">允許遙控</span> 作者才能操作你的滑鼠鍵盤。</li>
+              <li>處理完按 <span class="ui">結束協助模式</span> 或關掉程式，所有連線就會中斷。</li>
+              <li>每次連線的時間和來源都記在 <span class="path">logs\remote_connections.log</span>。</li>
+            </ul>
+          </div>
+          <figure style="margin:0">
+            <div class="appwin" aria-label="協助分頁示意圖">
+              <div class="appwin-tabs"><span>主控</span><span>設定</span><span class="on">協助</span><span>帳號</span></div>
+              <div class="appwin-body">
+                <div class="acard">
+                  <h4>回報問題</h4>
+                  <div class="ainput" style="min-height:58px;color:var(--app-muted)">例如：樂園第 4 隻角色打完站在城裡不動，大約 20:46</div>
+                  <div class="arow"><span class="abtn" style="min-width:100px">送出回報</span></div>
+                </div>
+                <div class="acard">
+                  <h4>遠端協助</h4>
+                  <div class="arow"><span class="abtn run" style="min-width:130px">結束協助模式</span><span class="acheck"><i></i>允許遙控 (作者可以操作滑鼠鍵盤)</span></div>
+                  <div class="hint" style="font-family:var(--mono)">協助模式開啟中 · 房間 ABCD2345 · 1 個連線觀看中</div>
+                </div>
+              </div>
+            </div>
+            <figcaption class="caption">協助分頁，遠端協助開啟中的樣子 (示意圖)</figcaption>
+          </figure>
+        </div>
+        <h3>聯絡作者</h3>
+        <div class="contact">
+          <div class="row"><span class="k">Discord</span><span class="v" id="c-discord">sd_peko</span><button type="button" class="copy" data-copy="sd_peko" data-target="c-discord">複製</button></div>
+          <div class="row"><span class="k">Email</span><span class="v" id="c-email">sd016808@gmail.com</span><button type="button" class="copy" data-copy="sd016808@gmail.com" data-target="c-email">複製</button></div>
+        </div>
+      </section>
+
+      <!-- ===================== 帳號與續費 ===================== -->
+      <section class="chapter" id="billing">
+        <h2><span class="eyebrow">需要幫忙時</span>帳號與續費</h2>
+        <p>剩幾天顯示在程式右上角，顏色代表狀態；詳細的到期日在 <span class="ui">帳號</span> 分頁。</p>
+        <div class="legend" aria-label="右上角授權標籤的顏色">
+          <span><span class="pill ok">試用 剩 3 天</span>正常</span>
+          <span><span class="pill warn">付費 剩 6 天</span>7 天內到期</span>
+          <span><span class="pill bad">付費 剩 2 天</span>3 天內到期</span>
+          <span><span class="pill warn">連不上授權伺服器</span>網路斷線中</span>
+        </div>
+
+        <h3>續費</h3>
+        <ol class="flow">
+          <li>在 Discord 私訊作者，問付款方式</li>
+          <li>付款後，把你的帳號 (註冊的 email) 告訴作者</li>
+          <li>作者在後台幫你延長</li>
+          <li>1 分鐘內自動生效，不用重開程式</li>
+        </ol>
+
+        <h3>到期、斷線與被登出</h3>
+        <div class="prose">
+          <ul>
+            <li><b>到期時</b>：正在跑的任務會讓它跑完；之後不能開始新任務，主控分頁會顯示紅字。任務結束後回到登入畫面。續費後不用重新安裝或重開。</li>
+            <li><b>網路斷線或伺服器暫時連不上</b> (作者更新伺服器時也會短暫出現)：任務照跑，30 分鐘內恢復就沒事；超過 30 分鐘才會回到登入畫面。</li>
+            <li><b>「此帳號已在其他地方登入」</b>：同一個帳號只能在一台電腦用。如果不是你自己在別台登入，請用「忘記密碼」改密碼。</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===================== 常見問題 ===================== -->
+      <section class="chapter" id="faq">
+        <h2><span class="eyebrow">需要幫忙時</span>常見問題</h2>
+        <div class="faq">
+          <details>
+            <summary>角色全部被跳過，說混沌副本次數不夠或樂園沒有次數</summary>
+            <div class="ans"><p>角色列表右邊的面板沒有顯示「混沌副本」或「樂園(天堂)」，程式讀不到剩餘次數。照 <a href="#ingame">遊戲內設定</a> 第 5 項，用面板右上角的齒輪把這兩項顯示出來。</p></div>
+          </details>
+          <details>
+            <summary>技能常常放空，沒打到怪</summary>
+            <div class="ans"><p>檢查 <a href="#ingame">遊戲內設定</a> 的「一般技能自動瞄準」、「地點技能自動瞄準」、「使用智能指定地點技能」有沒有都勾。</p></div>
+          </details>
+          <details>
+            <summary>按了開始沒反應，顯示「找不到 LOSTARK 視窗」</summary>
+            <div class="ans"><p>遊戲還沒開、還在讀取，或被縮到工作列了。等遊戲畫面出來、角色可以動之後再按一次。</p></div>
+          </details>
+          <details>
+            <summary>顯示「虛擬搖桿連接失敗」</summary>
+            <div class="ans"><p>ViGEmBus 沒裝或還沒準備好。到 <a href="#install">安裝</a> 第 3 步裝 ViGEmBus，裝完重開機。剛開機時驅動可能晚一點才好，等一下再按主控分頁的 <span class="ui">重試</span>。</p></div>
+          </details>
+          <details>
+            <summary>註冊後說「這台電腦已經用過免費試用」</summary>
+            <div class="ans"><p>一台電腦只有一次試用。帳號已經建好了，付費後就能用，續費方式見 <a href="#billing">帳號與續費</a>。</p></div>
+          </details>
+          <details>
+            <summary>用到一半被登出，說「此帳號已在其他地方登入」</summary>
+            <div class="ans"><p>同一個帳號在別台電腦登入了。如果不是你，請馬上用登入畫面的「忘記密碼」改密碼。</p></div>
+          </details>
+          <details>
+            <summary>登入時說「密碼錯誤太多次，暫停登入」</summary>
+            <div class="ans"><p>密碼連續輸錯 5 次會暫停登入 15 分鐘，畫面上會寫幾點之後可以再試；暫停期間就算密碼打對也進不去，之後再連續輸錯會停更久。想不起密碼就用登入畫面的「忘記密碼」重設，重設好馬上可以登入。已經登入、正在用的程式不受影響。如果畫面說的是「這個網路位址密碼錯誤太多次」，是你所在的網路 (例如同一個手機熱點) 在 10 分鐘內猜錯太多次，等 15 分鐘再試，或換個網路。</p></div>
+          </details>
+          <details>
+            <summary>主控分頁出現黃色的公告，或紅字說「管理員已暫停所有人的任務」、「這個版本太舊」</summary>
+            <div class="ans"><p>黃色框是作者的公告，看一下就好。紅字「管理員已暫停所有人的任務」通常是遊戲改版讓工具暫時不能用，正在跑的任務會被停掉；作者修好解除後程式會自動恢復，不用重開。紅字說「這個版本太舊」就到「帳號」分頁按「檢查更新」裝新版，正在跑的任務會讓它跑完，之後要更新才能再開始。</p></div>
+          </details>
+          <details>
+            <summary>出現「連不上授權伺服器」</summary>
+            <div class="ans"><p>多半是網路斷了，或作者正在更新伺服器 (通常幾分鐘)。任務會照跑，30 分鐘內恢復就自動回到正常，不用做任何事；超過 30 分鐘才會回到登入畫面，網路好了再登入即可。</p></div>
+          </details>
+          <details>
+            <summary>任務卡住不動了</summary>
+            <div class="ans">
+              <p>按 <kbd>F10</kbd> 暫停，自己把角色帶到正常的地方，再按 <kbd>F10</kbd> 繼續；或按同一個任務的快捷鍵停止，重新開始。</p>
+              <p>再發生的話，到 <a href="#help">協助</a> 分頁送出回報，寫下是哪個任務、第幾隻角色、大概幾點。</p>
+            </div>
+          </details>
+          <details>
+            <summary>主控分頁的紀錄出現「遊戲視窗不在支援範圍」</summary>
+            <div class="ans"><p>遊戲解析度不是 16:9 或小於 1920×1080。到遊戲設定改成 1920×1080 或 2560×1440 等 16:9 解析度，改完不用重開程式。</p></div>
+          </details>
+          <details>
+            <summary>程式的字太大、視窗超出螢幕</summary>
+            <div class="ans"><p>按右上角的「－」，或按住 <kbd>Ctrl</kbd> 滾滑鼠滾輪縮小。視窗大小和縮放會記住，下次開一樣。</p></div>
+          </details>
+          <details>
+            <summary>在設定頁改了東西但沒生效</summary>
+            <div class="ans"><p>改完要按 <span class="ui">儲存</span>。設定在開始任務時才讀，正在跑的任務不會變，下次開始才生效。</p></div>
+          </details>
+          <details>
+            <summary>程式說有新版本，要不要更新？</summary>
+            <div class="ans"><p>建議更新。登入後程式會自己檢查，有新版會跳出更新內容；任務進行中請先停止再更新。你的設定和登入狀態不會被覆蓋。</p></div>
+          </details>
+          <details>
+            <summary>好幾個遊戲帳號可以共用同一份設定嗎？</summary>
+            <div class="ans"><p>可以。slot 照角色最多的那個帳號填，角色比較少的帳號沒有的 slot 會自動略過，也不會出現在結算表。</p></div>
+          </details>
+        </div>
+      </section>
+
+      <!-- ===================== 注意事項 ===================== -->
+      <section class="chapter" id="notes">
+        <h2><span class="eyebrow">需要幫忙時</span>注意事項</h2>
+        <div class="callout gold">
+          <strong>使用風險</strong>
+          <p>使用任何自動化工具都可能違反遊戲的服務條款，請自行評估風險，使用後果由使用者自行承擔。</p>
+        </div>
+        <div class="prose">
+          <ul>
+            <li>程式資料夾裡的 <span class="path">settings.json</span> 是你的設定，<span class="path">logs</span> 是執行紀錄，<span class="path">reports</span> 是戰報，<span class="path">stats</span> 是每場的統計紀錄。搬資料夾時整個一起搬。</li>
+            <li>想自己用手機看電腦畫面，請用作者的另一個免費程式 <a href="https://github.com/sd016808/SmartRemote" target="_blank" rel="noopener">SmartRemote</a>；本程式的遠端協助只給作者排查問題用。</li>
+          </ul>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer>
+    <span>Smart Hunter 使用手冊 · 作者 吃泡麵度年的SD</span>
+    <a href="#start">回到最上面 ↑</a>
+  </footer>
+</div>
+
+<script>
+(function () {
+  // 開始前檢查清單：打勾記在這個瀏覽器 (讀寫失敗就當沒記)
+  var KEY = "smart-hunter-manual-checklist";
+  var boxes = Array.prototype.slice.call(document.querySelectorAll("#checklist input[type=checkbox]"));
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { saved = {}; }
+  boxes.forEach(function (b) {
+    if (saved[b.id]) b.checked = true;
+    b.addEventListener("change", function () {
+      saved[b.id] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch (e) {}
+    });
+  });
+  var reset = document.getElementById("check-reset");
+  if (reset) reset.addEventListener("click", function () {
+    boxes.forEach(function (b) { b.checked = false; });
+    saved = {};
+    try { localStorage.removeItem(KEY); } catch (e) {}
+  });
+
+  // 複製聯絡方式：剪貼簿不能用時改成選取文字，讓人自己按 Ctrl+C
+  Array.prototype.forEach.call(document.querySelectorAll("button[data-copy]"), function (btn) {
+    btn.addEventListener("click", function () {
+      var text = btn.getAttribute("data-copy");
+      var label = btn.textContent;
+      function flash(msg) { btn.textContent = msg; setTimeout(function () { btn.textContent = label; }, 1600); }
+      function selectFallback() {
+        var el = document.getElementById(btn.getAttribute("data-target"));
+        if (!el) return;
+        var range = document.createRange();
+        range.selectNodeContents(el);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        flash("已選取，按 Ctrl+C");
+      }
+      try {
+        navigator.clipboard.writeText(text).then(function () { flash("已複製"); }, selectFallback);
+      } catch (e) { selectFallback(); }
+    });
+  });
+
+  // 目錄：標出現在看到的章節 (只是加樣式，內容一開始就全部看得到)
+  var links = {};
+  Array.prototype.forEach.call(document.querySelectorAll(".toc a"), function (a) { links[a.getAttribute("href").slice(1)] = a; });
+  if ("IntersectionObserver" in window) {
+    var current = null;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting && links[en.target.id]) {
+          if (current) current.classList.remove("is-active");
+          current = links[en.target.id];
+          current.classList.add("is-active");
+        }
+      });
+    }, { rootMargin: "-20% 0px -70% 0px" });
+    Array.prototype.forEach.call(document.querySelectorAll("main .chapter"), function (s) { io.observe(s); });
+  }
+})();
+</script>
+
+</html>
