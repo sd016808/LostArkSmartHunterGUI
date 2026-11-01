@@ -555,12 +555,23 @@ footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
         <div class="prose">
           <ul>
             <li><b>地獄寶箱順序</b>：打完要開哪個寶箱，照順序挑畫面上第一個有的，用「、」隔開，例如 <span class="path">特殊提煉、綁定金幣、融合</span>。名稱裡有這幾個字就算符合，寫 <span class="path">7階段特殊提煉寶箱</span> 就只要 7 階段的。留空 = 預設順序 (特殊提煉 &gt; 綁定金幣 &gt; 融合 &gt; 天堂 &gt; 破壞石 &gt; 提煉輔助 &gt; 星石 &gt; 碎片 &gt; 命運之石 &gt; 能力石 &gt; 手環)。</li>
+            <li><b>地獄打完自動開寶箱</b>：預設勾。不勾的話打完會停在原地、嗶兩聲提醒你自己來開寶箱，開完 (「再次挑戰」亮了) 就自動再次挑戰或換下一隻角色。</li>
             <li><b>地獄要打的角色</b>：預設跟每日任務一樣；取消勾選 <span class="ui">地獄打的角色跟上面每日混沌副本相同</span> 就能另外設定，每隻也可以有自己的寶箱順序。</li>
             <li><b>角色名字白名單</b> (選填)：一行一個角色名字，只用來修正統計報表裡辨識錯的名字。</li>
             <li><b>重播停留</b>：一般不用改。</li>
             <li><b>修理裝備</b>：勾了的話每隻角色登入簽到後，會用寵物功能的「修理」把穿戴裝備修好。要有水晶光環才有寵物功能，沒有的角色會自動跳過，不影響打副本。預設不勾。</li>
             <li><b>釣魚</b>：生活能量低於多少就停止釣魚 (預設 300)，以及釣竿技能放在技能列哪一格 (預設 R；程式按這個鍵，也看這一格有沒有亮)。</li>
             <li><b>滑鼠游標</b>：游標擋到要辨識的畫面時程式會把它移到畫面左邊；這裡填最少隔幾秒才再檢查一次，0 = 每次截圖前都檢查 (預設)。覺得滑鼠太常被移走可以填 5 或 10，但游標擋在結算畫面的按鈕上程式會看不到通關，數字越大風險越高。</li>
+          </ul>
+        </div>
+
+        <h3>多個帳號：設定檔</h3>
+        <div class="prose">
+          <p>玩好幾個帳號的話，每個帳號可以有自己的一份設定。<span class="ui">主控</span> 分頁最上面的「設定檔」下拉選單：預設是 <span class="path">settings.json</span>，在右邊輸入名稱 (例如 小號) 按 <span class="ui">新增</span>，就會從目前這份複製出 <span class="path">settings_小號.json</span> 並切過去，之後 <span class="ui">設定</span> 分頁改的、儲存的就是這一份。</p>
+          <ul>
+            <li>切換後下一次開始任務才生效；任務進行中不能切換、新增或刪除。</li>
+            <li>每份設定檔的戰報和統計分開放：預設在 <span class="path">reports</span>、<span class="path">stats</span>，小號在 <span class="path">reports\小號</span>、<span class="path">stats\小號</span>。「開啟 reports 資料夾」開的是目前設定檔的那一層。</li>
+            <li><span class="ui">刪除</span> 要按兩次才會真的刪，只刪設定檔，戰報和統計留著；預設那份不能刪。上次選的設定檔下次開程式會記住。</li>
           </ul>
         </div>
       </section>
@@ -838,6 +849,7 @@ footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
         <div class="prose">
           <ul>
             <li>程式資料夾裡的 <span class="path">settings.json</span> 是你的設定，<span class="path">logs</span> 是執行紀錄，<span class="path">reports</span> 是戰報，<span class="path">stats</span> 是每場的統計紀錄。搬資料夾時整個一起搬。</li>
+            <li>用設定檔分帳號時，小號的設定是 <span class="path">settings_小號.json</span>，戰報和統計在 <span class="path">reports\小號</span>、<span class="path">stats\小號</span>。</li>
             <li>想自己用手機看電腦畫面，請用作者的另一個免費程式 <a href="https://github.com/sd016808/SmartRemote" target="_blank" rel="noopener">SmartRemote</a>；本程式的遠端協助只給作者排查問題用。</li>
           </ul>
         </div>
