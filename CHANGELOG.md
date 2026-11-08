@@ -2,6 +2,10 @@
 
 每一版改了什麼，內容跟 [Releases](https://github.com/sd016808/LostArkSmartHunterGUI/releases) 頁的說明相同 (由 publish_docs.ps1 自動產生)。下載最新版：https://github.com/sd016808/LostArkSmartHunterGUI/releases/latest
 
+## v1.31.0 (2026-11-08)
+
+- 地獄：設定頁新增「10、20…90 層走綠色「孤注一擲」互動點」勾選 (settings.json 的 `hell.useGambleDrop`)，預設勾、行為跟以前一樣；不勾的話整數樓層不理綠色互動點，跟其他樓層一樣走米白的互動點往下跳 (客戶要求)。
+
 ## v1.30.1 (2026-11-07)
 
 - 樂園：穿裝、材料萃取不再每場都做，改成每 6 場整理一次，票打完的最後一場也會整理 (客戶反饋每場都開包包太慢)。片鱗照樣每場打完都撿。超過 50 分鐘重新入場後場數接著算。
