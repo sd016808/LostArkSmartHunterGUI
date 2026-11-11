@@ -2,6 +2,10 @@
 
 每一版改了什麼，內容跟 [Releases](https://github.com/sd016808/LostArkSmartHunterGUI/releases) 頁的說明相同 (由 publish_docs.ps1 自動產生)。下載最新版：https://github.com/sd016808/LostArkSmartHunterGUI/releases/latest
 
+## v1.32.1 (2026-11-11)
+
+- 混沌副本：修正打完按左上「離開」後，跳出「離開庫爾湛前線 / 是否離開作戰?」確認視窗卻沒有按確認的問題 (v1.32.0 把它當成樂園的「是否離開副本?」在找，認不出來)。
+
 ## v1.32.0 (2026-11-11)
 
 - 混沌副本：打完 (包括倒數到 0、超過 6 分鐘沒偵測到結算) 會先按左上的「離開」→「確認」，回到進副本前的地方再換下一隻角色。Ctrl+F10 和一鍵每日都是 (客戶要求)。
