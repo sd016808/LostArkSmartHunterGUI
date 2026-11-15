@@ -2,6 +2,11 @@
 
 每一版改了什麼，內容跟 [Releases](https://github.com/sd016808/LostArkSmartHunterGUI/releases) 頁的說明相同 (由 publish_docs.ps1 自動產生)。下載最新版：https://github.com/sd016808/LostArkSmartHunterGUI/releases/latest
 
+## v1.34.2 (2026-11-15)
+
+- 修正：自動登入輸入 2 次密碼時，有些電腦會跳「找不到數字 5」(或其他數字) 而停下來。數字鍵盤的辨識改成整個鍵盤一起比對，長得像的數字 (5 和 6、3 和 8) 不會再分不出來。
+- 沒把握的時候一樣不會亂按，會停下來並把畫面存成 `keypad_error.png`；遇到的話請把這張圖回報給作者。
+
 ## v1.34.1 (2026-11-15)
 
 - 修正：v1.34.0 自動更新會失敗 (「更新檔裡應該剛好有 1 個 exe，實際有 2 個」)。這一版可以正常更新。
