@@ -2,6 +2,11 @@
 
 每一版改了什麼，內容跟 [Releases](https://github.com/sd016808/LostArkSmartHunterGUI/releases) 頁的說明相同 (由 publish_docs.ps1 自動產生)。下載最新版：https://github.com/sd016808/LostArkSmartHunterGUI/releases/latest
 
+## v1.34.1 (2026-11-15)
+
+- 修正：v1.34.0 自動更新會失敗 (「更新檔裡應該剛好有 1 個 exe，實際有 2 個」)。這一版可以正常更新。
+- 登入工具 `LostArkAutoLogin.exe` 改放在 Smart Hunter 資料夾裡的 `LostArkAutoLogin` 資料夾。手動下載過 v1.34.0 的人，原本放在外面那一支可以刪掉。
+
 ## v1.34.0 (2026-11-15)
 
 **新功能：自動登入與多帳號每日**
