@@ -660,10 +660,37 @@ footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
         <div class="prose">
           <p>在 <span class="ui">設定</span> 分頁的「排程」填好時間和任務 (例如每天 05:30 一鍵每日)，時間到就會自動開始，跟按任務按鈕一樣。主控分頁的任務按鈕下面會顯示下一個排程。</p>
           <ul>
-            <li>工具要開著、登入中，遊戲也要開著；電腦睡著或工具沒開的那一次不會補做。</li>
+            <li>工具要開著、登入中，遊戲也要開著 (排「多帳號每日」或「登入遊戲」的話遊戲不用先開，它會自己開)；電腦睡著或工具沒開的那一次不會補做。</li>
             <li>時間到時如果已經有任務在跑 (包括暫停中)，這次就跳過，不會停掉正在跑的任務，隔天同一時間再來。</li>
             <li>同一個時間只能排一個任務。</li>
             <li>排釣魚的話，要先站到釣點 (水邊)，程式會自己切生活技能、找能拋竿的位置。</li>
+          </ul>
+        </div>
+
+        <h3 id="autologin">自動登入與多帳號每日</h3>
+        <div class="prose">
+          <p>資料夾裡多了一支登入工具 <code>LostArkAutoLogin.exe</code>：它會開啟動器、輸入帳號密碼與 OTP、按開始遊戲、選伺服器、按遊戲開始、輸入 2 次密碼。可以直接開它手動用，也可以讓 Smart Hunter 幫你叫它。</p>
+          <p><b>先設定一次</b></p>
+          <ol>
+            <li>到 <span class="ui">設定</span> 分頁的「自動登入」，按 <span class="ui">開啟登入工具</span>，在登入工具裡 <span class="ui">新增帳號</span>：取一個別名，填帳號、密碼、伺服器；OTP 金鑰和 2 次密碼可以不填 (不填的那一步要自己輸入)。啟動器不是裝在預設位置的話，在登入工具下方改啟動器路徑。</li>
+            <li>回到 Smart Hunter 按 <span class="ui">重新整理</span>，在「這份設定檔登入的帳號」選剛剛的別名，按 <span class="ui">儲存</span>。</li>
+          </ol>
+          <p>帳號密碼只存在登入工具裡，用 Windows 加密存在這台電腦，Smart Hunter 的設定檔只記別名。</p>
+          <p><b>登入遊戲</b> (<kbd>Ctrl</kbd>+<kbd>F3</kbd>，或主控分頁右上的 <span class="ui">登入遊戲</span>)：遊戲還沒開的時候才能按。會幫你開遊戲、登入目前設定檔綁定的帳號，進到遊戲畫面就結束，接著可以自己按任務。</p>
+          <p><b>多帳號每日</b> (<kbd>Ctrl</kbd>+<kbd>F2</kbd>，或 <span class="ui">開始 多帳號每日</span>)：一個帳號一個帳號自動跑，登入 → 跑任務 → 關遊戲 → 換下一個帳號。</p>
+          <ol>
+            <li>每個帳號各用一份設定檔 (見「多個帳號：設定檔」)，每份設定檔在「自動登入」各綁一個帳號。</li>
+            <li>到 <span class="ui">設定</span> 分頁的「多帳號每日」，勾要跑的設定檔、用 <span class="ui">上移</span> / <span class="ui">下移</span> 排順序、選每個帳號要跑的任務 (預設一鍵每日)，按 <span class="ui">儲存</span>。</li>
+          </ol>
+          <ul>
+            <li>遊戲不用先開；開著的話會先關掉重新登入。</li>
+            <li>沒綁定帳號的設定檔會跳過。某個帳號失敗只會記下來，照樣換下一個。</li>
+            <li>全部跑完後主控分頁會列出每個帳號的結果；各帳號自己的結算表和報告在它的 reports 資料夾。</li>
+            <li>可以放進排程：任務選「多帳號每日」，每天時間到就自動全部跑一輪。</li>
+            <li>登入過程會動滑鼠，請不要碰滑鼠鍵盤；遊戲視窗不能被別的視窗擋住。</li>
+            <li>遊戲啟動比較慢是正常的，程式會等到遊戲視窗出現 (最久 10 分鐘)。</li>
+            <li>2 次密碼的數字鍵盤認不出來時不會亂按，會停下來並把畫面存成 <code>keypad_error.png</code>，請回報給作者。</li>
+            <li>只支援台版 (HappyTuk) 的啟動器。</li>
           </ul>
         </div>
 
@@ -692,6 +719,8 @@ footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
               <tr><td><kbd>Ctrl</kbd>+<kbd>F7</kbd></td><td>開始 / 停止 釣魚</td></tr>
               <tr><td><kbd>Ctrl</kbd>+<kbd>F6</kbd></td><td>開始 / 停止 一鍵每日 (簽到 → 樂園 → 地獄 → 混沌副本)</td></tr>
               <tr><td><kbd>Ctrl</kbd>+<kbd>F4</kbd></td><td>開始 / 停止 共鳴 (每隻角色把樂園的共鳴按完，不入場)</td></tr>
+              <tr><td><kbd>Ctrl</kbd>+<kbd>F2</kbd></td><td>開始 / 停止 多帳號每日 (每個帳號登入 → 跑任務 → 關遊戲)</td></tr>
+              <tr><td><kbd>Ctrl</kbd>+<kbd>F3</kbd></td><td>開始 / 停止 登入遊戲 (遊戲沒開時自動開遊戲登入)</td></tr>
               <tr><td><kbd>F10</kbd></td><td>任務進行中：暫停 / 繼續</td></tr>
               <tr><td><kbd>Ctrl</kbd>+滑鼠滾輪</td><td>在程式視窗裡：放大 / 縮小程式畫面 (<kbd>Ctrl</kbd>+<kbd>0</kbd> 回到 100%)</td></tr>
             </tbody>
